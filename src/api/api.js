@@ -8,7 +8,7 @@ import openSocket from 'socket.io-client';
 const socket = openSocket('http://localhost:8000'); // construct socket using socket.io's baked-in export method
 
 
-export function subscribeToTimer(interval, cb) {
+export function subscribeToTimer(cb, interval) {
   // vv subscribe to 'timer' event before emitting subscribeToTimer event to avoid a race between sever emitting events and client showing interest in those events, causing events to go missing
   socket.on('timer', (timestamp) => cb(null, timestamp));
   socket.emit('subscribeToTimer', interval)
