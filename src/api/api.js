@@ -15,4 +15,9 @@ export function subscribeToUser(cb) {
   socket.emit('subscribeToUser')
 }
 
+export function unsubscribeFromUser(cb) {
+  console.log('Client unsubscribes from "addUser"')
+  socket.removeAllListener('addUser');
+}
+
 // see how this function is imported and utilized in App.js
