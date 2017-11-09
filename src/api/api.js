@@ -9,15 +9,18 @@ const socket = openSocket('http://localhost:8000'); // construct socket using so
 
 
 export function subscribeToUser(cb) {
-  console.log('Subscribe to "addUser" socket')
-  // vv subscribe to 'user' event before emitting subscribeToTimer event to avoid a race between sever emitting events and client showing interest in those events, causing events to go missing
-  socket.on('addUser', (content) => cb(null, content));
-  socket.emit('subscribeToUser')
+  
+  socket.on('connected', (data) => {
+    console.log('Subscribe to "addUser" socket')
+    socket.emit('ready for data', {});
+
+    socket.on('addUser', (content) => cb(null, content));
+  })
 }
 
 export function unsubscribeFromUser(cb) {
   console.log('Client unsubscribes from "addUser"')
-  socket.removeAllListener('addUser');
+  socket.removeAllListeners('addUser');
 }
 
 // see how this function is imported and utilized in App.js

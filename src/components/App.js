@@ -16,8 +16,11 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    subscribeToUser((err, socketData) => { console.log(socketData); this.setState({ socketData, socketOpen: true }) }, 1000)
+    if(!this.state.socketOpen) {
+      subscribeToUser((err, socketData) => { console.log(socketData); this.setState({ socketData, socketOpen: true }) })
+    }
   }
+   
 
   // componentWillUnmount() {
   //   unsubscribeFromUser();
