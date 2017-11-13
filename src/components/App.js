@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import moment from 'moment';
 
 // ASSETS
-import { subscribeToUser, unsubscribeFromUser } from '../api/api'; // import subscription function
+import { subscribeToBookingsChannel, unsubToBookingsChannel } from '../api/api'; // import subscription function
 // import '../styles/App.css';
 
 export default class App extends Component {
@@ -17,29 +17,22 @@ export default class App extends Component {
 
   componentDidMount() {
     if(!this.state.socketOpen) {
-      subscribeToUser((err, socketData) => { console.log(socketData); this.setState({ socketData, socketOpen: true }) })
+      subscribeToBookingsChannel((err, socketData) => { this.setState({ socketData, socketOpen: true }) })
     }
   }
    
-
   // componentWillUnmount() {
   //   unsubscribeFromUser();
   // }
 
   render() {
-    // let time = this.state.socketOpen ? moment(this.state.timestamp).format('h:mm:ss') : this.state.timestamp;
     console.log("Component renders!!")
-    console.log(this.state.socketData)
-    let socketData = this.state.socketData;
-
-    let name = socketData ? socketData.payload : null;
+    let socketPayload = this.state.socketData ? JSON.parse(this.state.socketData.payload) : null;
+    let name = socketPayload ? socketPayload.name : null;
 
     return (
       <div className='App'>
-        <h1>This page is running on a totally distinct server from Op36</h1>
-        <h5>It's listening to a Node Server and subscribing to a socket opened on that server. <br/> That socket taps in to the postgresql DB generated in Rails by the Op36 server.</h5>
-        <h5>Trigger functions are set up on the DB to listen for insertions</h5>
-        <p>User added to Op36: <br/> {name} </p>
+        <p>Data added to 'bookings' table: <br/> {name} </p>
       </div>
     );
   }
